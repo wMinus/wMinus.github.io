@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>费用流与模拟费用流 | Minus</title><meta name="author" content="Minus"><meta name="copyright" content="Minus"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="可撤销贪心一般就是带约束的最优性问题。 考虑贪心暴力选，然后把不选这个而选被这个决策约束的其它决策这种方案加入堆里，这么反复。 P1792 [国家集训队]种树 贪心选 $a_i$  选 $a{i + 1} + a{i-1}-a_i$   用一个链表维护这个东西，每次我们选一个点，然后把它左右两侧的点标记为不能选，然后把它变成一个权值为 $a{i+1} + a{i-1} - a_i$ 的新点，并且这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="费用流与模拟费用流">
+<meta property="og:url" content="http://example.com/2023/07/01/%E8%B4%B9%E7%94%A8%E6%B5%81%E4%B8%8E%E6%A8%A1%E6%8B%9F%E8%B4%B9%E7%94%A8%E6%B5%81/index.html">
+<meta property="og:site_name" content="Minus">
+<meta property="og:description" content="可撤销贪心一般就是带约束的最优性问题。 考虑贪心暴力选，然后把不选这个而选被这个决策约束的其它决策这种方案加入堆里，这么反复。 P1792 [国家集训队]种树 贪心选 $a_i$  选 $a{i + 1} + a{i-1}-a_i$   用一个链表维护这个东西，每次我们选一个点，然后把它左右两侧的点标记为不能选，然后把它变成一个权值为 $a{i+1} + a{i-1} - a_i$ 的新点，并且这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cat.jpg">
+<meta property="article:published_time" content="2023-06-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-07T14:22:31.106Z">
+<meta property="article:author" content="Minus">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cat.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/07/01/%E8%B4%B9%E7%94%A8%E6%B5%81%E4%B8%8E%E6%A8%A1%E6%8B%9F%E8%B4%B9%E7%94%A8%E6%B5%81/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '费用流与模拟费用流',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-07 22:22:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = url => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      link.onload = () => resolve()
+      link.onerror = () => reject()
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/cat.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top_img.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Minus"><span class="site-name">Minus</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">费用流与模拟费用流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-07T14:22:31.106Z" title="更新于 2023-08-07 22:22:31">2023-08-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BF%A1%E6%81%AF%E7%AB%9E%E8%B5%9B/">信息竞赛</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="费用流与模拟费用流"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="可撤销贪心"><a href="#可撤销贪心" class="headerlink" title="可撤销贪心"></a>可撤销贪心</h1><p>一般就是带约束的最优性问题。</p>
+<p>考虑贪心暴力选，然后把不选这个而选被这个决策约束的其它决策这种方案加入堆里，这么反复。</p>
+<h2 id="P1792-国家集训队-种树"><a href="#P1792-国家集训队-种树" class="headerlink" title="P1792 [国家集训队]种树"></a>P1792 [国家集训队]种树</h2><ul>
+<li><p>贪心选 $a_i$</p>
+</li>
+<li><p>选 $a<em>{i + 1} + a</em>{i-1}-a_i$</p>
+</li>
+</ul>
+<p>用一个链表维护这个东西，每次我们选一个点，然后把它左右两侧的点标记为不能选，然后把它变成一个权值为 $a<em>{i+1} + a</em>{i-1} - a_i$ 的新点，并且这个新点的左、右邻居都要分别变成 $i+1,i-1$ 的左、右邻居。</p>
+<h1 id="费用流消圈算法"><a href="#费用流消圈算法" class="headerlink" title="费用流消圈算法"></a>费用流消圈算法</h1><p>判断一个费用流的流法是不是最优的。</p>
+<p>我们先对这个流法建立一个残量网络，然后你从 $T$ 开始跑 spfa，如果找到了一个负环，那么你把这个负环上所有边 +1 并且反边 -1 就可以得到一个更优的流（显然满足流量平衡，并且费用流更小）</p>
+<p>如果不存在负圈，则一定最优。（我不会证明，但是感觉很有道理）</p>
+<p>bonus：可以通过上下界网络流处理带负环的费用流问题，但是我不会。</p>
+<h1 id="费用流的凸性"><a href="#费用流的凸性" class="headerlink" title="费用流的凸性"></a>费用流的凸性</h1><p>根据 EK 算法，增广路会越来越长，因此费用关于流量是凸函数。</p>
+<p>费用流因为有凸性所以可以解决一些阴间问题。</p>
+<ul>
+<li><p>结合 wqs 二分</p>
+<p>  字面意思。</p>
+</li>
+<li><p>最小费用任意流</p>
+<p>  暴力增广直到单次费用为正。</p>
+</li>
+<li><p>负费用最大流</p>
+<p>  暴力增广直到总费用非正。</p>
+</li>
+</ul>
+<p>根据凸性，下一次增广永远是更劣的，因此这么做是对的。</p>
+<ul>
+<li><p>增量-最小费用任意流</p>
+<p>  只需要考虑源到汇的负边以及负环的贡献即可。</p>
+</li>
+</ul>
+<h1 id="费用流经典结论"><a href="#费用流经典结论" class="headerlink" title="费用流经典结论"></a>费用流经典结论</h1><ul>
+<li><p>一次增广不会多次经过一个节点</p>
+</li>
+<li><p>非增量费用流种源/汇不会退流。</p>
+</li>
+</ul>
+<h1 id="模拟费用流"><a href="#模拟费用流" class="headerlink" title="模拟费用流"></a>模拟费用流</h1><h2 id="P4694"><a href="#P4694" class="headerlink" title="P4694"></a>P4694</h2><p>首先建边，发现类似于一个二分图匹配问题。</p>
+<p>A.</p>
+<p>费用流告诉我们，这玩意关于 k 是凸的，因此我们直接上 wqs 二分。</p>
+<p>然后就是 增量-最小费用任意流 环节，这个自己去看题解吧。</p>
+<p>B.</p>
+<p>模拟整个 EK 过程。</p>
+<p>考虑我们每次一定是选一个 a，然后选一个 b，然后把它俩匹配起来，中间可能会 flip 若干条边，但由于源、汇连出去的边不可能再退回来（傻么）所以一定是中间的若干条边翻掉。</p>
+<p>于是其实问题变成了一个括号匹配问题。</p>
+<p>然后我们在线段树上维护 1145141919810 个 tag 就可以了。</p>
+<h2 id="P1484"><a href="#P1484" class="headerlink" title="P1484"></a>P1484</h2><p>考虑费用流做法，一个巧妙的考虑是把间隔当点，把坑当边，因为你的限制转化一下是每个间隔两边只能有一个坑。</p>
+<p>然后我们对于每个奇数间隔向偶数间隔连边，边权是 c_i。</p>
+<p>这题到这里其实已经完了因为你完全可以直接根据费用流凸性使用 wqs 二分大力做掉这个题。</p>
+<p>一个更优美的做法是考虑模拟费用流。</p>
+<p>由于我们是直接模拟费用流，因此我们需要考虑模拟 EK。</p>
+<p>每次流一条边相当于是把一个区间整个 flip一遍，然后把两个端点加上。</p>
+<p>直接模拟这个操作，每次找到可以干这个操作的所有点拿堆维护即可。</p>
+<h2 id="CF730I"><a href="#CF730I" class="headerlink" title="CF730I"></a>CF730I</h2><p>建边之后考虑费用流怎么想的。</p>
+<ul>
+<li><p>我直接加一个人到 S1。</p>
+</li>
+<li><p>我直接加一个人到 S2。</p>
+</li>
+<li><p>我直接加一个人到 S1，然后踢出一个人，把它加到 S2。</p>
+</li>
+<li><p>我直接加一个人到 S1，然后踢出一个人，把它加到 S2。</p>
+</li>
+</ul>
+<p>小trick，用 4 个堆维护 4 个决策，每次挑出所有可能的决策取最大值。</p>
+<p>补充一下，由于我们做的是模拟费用流这个玩意，因此我们的复杂度是 $O(Flow \times ComplexityPerOperation)$ 的，所以模拟费用流实际上就是在优化这个 $CPO$。</p>
+<h2 id="BZOJ4877-Mouse-2"><a href="#BZOJ4877-Mouse-2" class="headerlink" title="BZOJ4877 Mouse 2"></a>BZOJ4877 Mouse 2</h2><p>每个玩家连源点，每个敌人连汇点。</p>
+<p>我们还是考虑费用流是怎么想的，注意这里要做增量费用流，不然会出现菜鸡干掉王者的情况。</p>
+<ul>
+<li><p>我直接掏出一个 b 把它杀了。</p>
+</li>
+<li><p>我直接掏出一个 a 把它换了。</p>
+</li>
+</ul>
+<p>模拟即可。</p>
+<h2 id="UOJ-455-Mouse-3"><a href="#UOJ-455-Mouse-3" class="headerlink" title="UOJ 455 Mouse 3"></a>UOJ 455 Mouse 3</h2><p>这题重新写一下。</p>
+<p>首先，我们建图，S 连出所有送餐员，餐厅连到 T，所有的送餐员连到所有的餐厅。</p>
+<p>考虑给每个送餐员一个极小值，这样就可以任意流了。</p>
+<p>分类讨论一下：</p>
+<ul>
+<li><p>加入一个送餐员 x</p>
+<ul>
+<li><p>s-&gt;x-&gt;y-&gt;x’-&gt;s 构成的一个负环。</p>
+<p>  意义是把给 y 拿餐的送餐员放给 x</p>
+</li>
+<li><p>s-&gt;x-&gt;y-&gt;t 构成的一个负路径</p>
+<p>意思是把某一个 x 给 y</p>
+</li>
+</ul>
+</li>
+<li><p>加入一个餐厅</p>
+<ul>
+<li><p>t-&gt;y-&gt;x-&gt;y’-&gt;t 构成的一个负环</p>
+<ul>
+<li>s-&gt;x-&gt;y-&gt;t 构成的一个负路径</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="P6122"><a href="#P6122" class="headerlink" title="P6122"></a>P6122</h2><p>考虑源点连每个鼹鼠，鼹鼠连所有的隧道，然后隧道连汇点，这样是 GG 的。</p>
+<p>其实没必要，我们每条树边连双向边，就可以优化建图了。</p>
+<p>然后你考虑我们费用流的脑子，当然记得加极小值。</p>
+<ul>
+<li><p>我费用流一定不会出现环，因为我必然满流。</p>
+</li>
+<li><p>于是我其实每个老鼠只需要找到离他最近的洞然后钻进去，以及支持把边权 flip。</p>
+</li>
+</ul>
+<p>其实本质上是线段树维护费用流。</p>
+<h2 id="ICPC-world-finals-2018"><a href="#ICPC-world-finals-2018" class="headerlink" title="ICPC world finals 2018"></a>ICPC world finals 2018</h2><p>我们从深到浅加点。</p>
+<p>需要处理以 $u$ 为 LCA 的所有匹配。</p>
+<p>不会了。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Minus</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/07/01/%E8%B4%B9%E7%94%A8%E6%B5%81%E4%B8%8E%E6%A8%A1%E6%8B%9F%E8%B4%B9%E7%94%A8%E6%B5%81/">http://example.com/2023/07/01/%E8%B4%B9%E7%94%A8%E6%B5%81%E4%B8%8E%E6%A8%A1%E6%8B%9F%E8%B4%B9%E7%94%A8%E6%B5%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Minus</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a></div><div class="post_share"><div class="social-share" data-image="/img/cat.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/07/01/%E4%B8%89%E5%9B%9B%E5%85%83%E7%8E%AF%E8%AE%A1%E6%95%B0/" title="三四元环计数"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">三四元环计数</div></div></a></div><div class="next-post pull-right"><a href="/2023/01/23/%E5%88%9D%E7%AD%89%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" title="高数学习笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">高数学习笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/07/01/%E7%BD%91%E7%BB%9C%E6%B5%81trick%E6%80%BB%E7%BB%93/" title="网络流trick总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-01</div><div class="title">网络流trick总结</div></div></a></div><div><a href="/2023/07/01/%E4%BA%8C%E5%88%86%E5%9B%BE%E4%B8%8E%E7%BD%91%E7%BB%9C%E6%B5%81/" title="二分图与网络流"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-01</div><div class="title">二分图与网络流</div></div></a></div><div><a href="/2023/07/01/%E4%B8%89%E5%9B%9B%E5%85%83%E7%8E%AF%E8%AE%A1%E6%95%B0/" title="三四元环计数"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-01</div><div class="title">三四元环计数</div></div></a></div><div><a href="/2023/01/01/%E6%95%B0%E5%88%97%E9%80%9A%E9%A1%B9%E5%B0%8F%E8%AE%B0/" title="数列通项小记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">数列通项小记</div></div></a></div><div><a href="/2023/07/01/lxl%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="lxl的数据结构"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-01</div><div class="title">lxl的数据结构</div></div></a></div><div><a href="/2023/07/01/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B8%8E%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/" title="多项式与生成函数"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-01</div><div class="title">多项式与生成函数</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/cat.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Minus</div><div class="author-info__description">高考战士</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wMinus" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AF%E6%92%A4%E9%94%80%E8%B4%AA%E5%BF%83"><span class="toc-number">1.</span> <span class="toc-text">可撤销贪心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#P1792-%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F-%E7%A7%8D%E6%A0%91"><span class="toc-number">1.1.</span> <span class="toc-text">P1792 [国家集训队]种树</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8%E6%B5%81%E6%B6%88%E5%9C%88%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">费用流消圈算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8%E6%B5%81%E7%9A%84%E5%87%B8%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">费用流的凸性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8%E6%B5%81%E7%BB%8F%E5%85%B8%E7%BB%93%E8%AE%BA"><span class="toc-number">4.</span> <span class="toc-text">费用流经典结论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E8%B4%B9%E7%94%A8%E6%B5%81"><span class="toc-number">5.</span> <span class="toc-text">模拟费用流</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#P4694"><span class="toc-number">5.1.</span> <span class="toc-text">P4694</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P1484"><span class="toc-number">5.2.</span> <span class="toc-text">P1484</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CF730I"><span class="toc-number">5.3.</span> <span class="toc-text">CF730I</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BZOJ4877-Mouse-2"><span class="toc-number">5.4.</span> <span class="toc-text">BZOJ4877 Mouse 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UOJ-455-Mouse-3"><span class="toc-number">5.5.</span> <span class="toc-text">UOJ 455 Mouse 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P6122"><span class="toc-number">5.6.</span> <span class="toc-text">P6122</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICPC-world-finals-2018"><span class="toc-number">5.7.</span> <span class="toc-text">ICPC world finals 2018</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/01/lxl%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="lxl的数据结构">lxl的数据结构</a><time datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/01/%E7%BD%91%E7%BB%9C%E6%B5%81trick%E6%80%BB%E7%BB%93/" title="网络流trick总结">网络流trick总结</a><time datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/01/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B8%8E%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/" title="多项式与生成函数">多项式与生成函数</a><time datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/01/%E6%AC%A7%E6%8B%89%E5%9B%9E%E8%B7%AF/" title="欧拉回路">欧拉回路</a><time datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/01/%E5%AE%B9%E6%96%A5%E5%8F%8D%E6%BC%94%E7%9A%84%E5%86%8D%E6%8E%A2%E7%B4%A2/" title="容斥反演的再探索">容斥反演的再探索</a><time datetime="2023-06-30T16:00:00.000Z" title="发表于 2023-07-01 00:00:00">2023-07-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Minus</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
